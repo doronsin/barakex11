@@ -7,6 +7,9 @@ class Node:
         self.positive_child = pos
         self.negative_child = neg
 
+    def is_leaf(self):
+        return self.positive_child is None
+
 
 class Record:
     def __init__(self, illness, symptoms):
