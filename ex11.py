@@ -123,8 +123,7 @@ class Diagnoser:
             diagnosis_list.append(self.diagnose(record.symptoms))  # add diagnosis using the diagnose function
         dict_diag = self.dict_leaf(diagnosis_list)  # creates a dictionary of occurrences from the list
         tuple_list = list(dict_diag.items())  # turn the dictionaly to the tuple list
-        return min(tuple_list, key=lambda x: x[1])[
-            0]  # find the key with the lowest occurrence value and return the key
+        return min(tuple_list, key=lambda x: x[1])[0]  # find the key with lowest occurrence value and return the key
 
     ################################ PATH TO ILLNESS #######################################################################
 
@@ -235,8 +234,8 @@ def optimal_tree(records, symptoms, depth):
         curr_rate = temp_diagnoser.calculate_success_rate(records)  # calculate it success rate
 
         # save the the tree with the best rate
-        opt_tree_rate = curr_rate
         if curr_rate > opt_tree_rate:
+            opt_tree_rate = curr_rate
             opt_tree = temp_tree
     return opt_tree
 
