@@ -121,10 +121,13 @@ class Diagnoser:
         This function gets a list og records and creates a diagnosis list using a tree. Then it returns the most rare
         illness diagnosed
         '''
-        diagnosis_list = []  # create a list of diagnosed illnesses
+        all_illnesses = self.all_illnesses()  # contains all illnesses in the tree
         for record in records:  # run over al the records
-            diagnosis_list.append(self.diagnose(record.symptoms))  # add diagnosis using the diagnose function
-        dict_diag = self.dict_leaf(diagnosis_list)  # creates a dictionary of occurrences from the list
+            all_illnesses.append(self.diagnose(record.symptoms))  # add diagnosis using the diagnose function
+        # after this for-loop, all illness appears 1 or more times in the list "all_illnesses", and therefore if there
+        # is a illness which is not diagnosed from the records, it would be selected as the most rare one (because it
+        # appears 1 time exactly in all_illnesses
+        dict_diag = self.dict_leaf(all_illnesses)  # creates a dictionary of occurrences from the list
         tuple_list = list(dict_diag.items())  # turn the dictionaly to the tuple list
         return min(tuple_list, key=lambda x: x[1])[0]  # find the key with lowest occurrence value and return the key
 
