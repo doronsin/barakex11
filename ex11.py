@@ -79,7 +79,7 @@ class Diagnoser:
         :param symptoms: list of strings
         :return: the name of the illness (string)
         """
-        return self.diagnose_helper(self.root, symptoms)  # calling a recursuve helper with self.root)
+        return self.diagnose_helper(self.root, symptoms)  # calling a recursive helper with self.root)
 
     # ########################### SUCCESS RATE #########################################################################
 
@@ -102,9 +102,9 @@ class Diagnoser:
         """
         This is a recursive helper that reaches all the leafs of a tree and returns a list of their values (string)
         """
-        if not root.positive_child:  # if you are in a leaf then return its data.
+        if root.is_leaf():  # if you are in a leaf then return its data.
             return [root.data]
-        # else, run a recurtion both to the right and to the left branch and return the sum of them - a list of strings
+        # else, run a recursion both to the right and to the left branch and return the sum of them - a list of strings
         return self.all_illnesses_helper(root.positive_child) + self.all_illnesses_helper(root.negative_child)
 
     def all_illnesses(self):
@@ -130,7 +130,7 @@ class Diagnoser:
         # is a illness which is not diagnosed from the records, it would be selected as the most rare one (because it
         # appears 1 time exactly in all_illnesses
         dict_diag = dict_leaf(all_illnesses)  # creates a dictionary of occurrences from the list
-        tuple_list = list(dict_diag.items())  # turn the dictionaly to the tuple list
+        tuple_list = list(dict_diag.items())  # turn the dictionary to the tuple list
         return min(tuple_list, key=lambda x: x[1])[0]  # find the key with lowest occurrence value and return the key
 
     # ############################### PATH TO ILLNESS #################################################################
@@ -140,7 +140,7 @@ class Diagnoser:
         This function gets the current node of a tree and the illness as well as the path to the cuurent Node,
         and returns the sub paths
         """
-        if not root.positive_child:
+        if root.is_leaf():
             if root.data == illness:
                 return [path_sublist]
             else:
@@ -170,7 +170,7 @@ class Diagnoser:
 
 def place_illness(records, symptoms_on_path, symptoms):
     """
-    This is a helper function of build_tree function. It find the write illness to place on a leaf and returns the
+    This is a helper function of build_tree function. It find the right illness to place on a leaf and returns the
     leaf Node
     :param records: list of records
     :param symptoms_on_path: A list of symptoms (strings) which we went through until we got to the leaf
@@ -186,7 +186,7 @@ def place_illness(records, symptoms_on_path, symptoms):
         if set(symptoms_on_path).issubset(rec_symptoms) and \
                 (set(rec_symptoms) - set(symptoms_on_path)).intersection(set(symptoms)) == set():
             dict_ill[illness] = dict_ill.get(illness, 0) + 1  # if you pass the criteria then add it to the list
-    if dict_ill == {}:  # no candidate found just return the current record's illness
+    if dict_ill == {}:  # no candidate found just return the first record's illness
         return Node(records[0].illness, None, None)
     else:  # if there are several candidates, then return the one with the max amount of occurrences in the list
         fre_ill = max(list(dict_ill.items()), key=lambda x: x[1])[0]
@@ -275,26 +275,3 @@ if __name__ == "__main__":
         print("Test passed")
     else:
         print("Test failed. Should have printed cold, printed: ", diagnosis)
-
-# #simple test 2
-# records = [Record('cold', ['coughh']), Record('cold', ['cough', 'headache']), Record('influenza', ['cough', 'fever'])]
-# rate = diagnoser.calculate_success_rate(records)
-# print(rate)
-#
-# #simple test 3
-# print(diagnoser.all_illnesses())
-#
-# #simple test 4
-# print(diagnoser.most_rare_illness(records))
-#
-# #simple test 5
-# print(diagnoser.paths_to_illness("cold"))
-#
-# #simple test 6
-# x= build_tree(records, ['cough', 'headache'])
-#
-#
-# # simple tet 7
-# records = [Record('flu',['cough', 'fever']), Record('cold', ['cough'])]
-# x = optimal_tree(records,['cough','fever'],1)
-# pass
