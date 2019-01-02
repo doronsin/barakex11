@@ -3,18 +3,58 @@ import itertools
 
 class Node:
     def __init__(self, data, pos=None, neg=None):
-        self.data = data
-        self.positive_child = pos
-        self.negative_child = neg
+        self._data = data
+        self._positive_child = pos
+        self._negative_child = neg
 
     def is_leaf(self):
-        return self.positive_child is None
+        return self._positive_child is None
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, value):
+        self._data = value
+
+    @property
+    def positive_child(self):
+        return self._positive_child
+
+    @positive_child.setter
+    def positive_child(self, new_positive_child):
+        self._positive_child = new_positive_child
+
+    @property
+    def negative_child(self):
+        return self._negative_child
+
+    @negative_child.setter
+    def negative_child(self, new_negative_child):
+        self._negative_child = new_negative_child
 
 
 class Record:
     def __init__(self, illness, symptoms):
-        self.illness = illness
-        self.symptoms = symptoms
+        self._illness = illness
+        self._symptoms = symptoms
+
+    @property
+    def illness(self):
+        return self._illness
+
+    @illness.setter
+    def illness(self, new_illness):
+        self._illness = new_illness
+
+    @property
+    def symptoms(self):
+        return self._symptoms
+
+    @symptoms.setter
+    def symptoms(self, new_symptoms):
+        self._symptoms = new_symptoms
 
 
 def parse_data(file_path):
